@@ -1,0 +1,93 @@
+/* Base styles for all widgets */
+
+QWidget {
+    background-color: {{ style.background }};
+    color: {{ style.text_color }};
+    font-size: {{ style.font_size }}px;
+}
+
+/* General button styles */
+QPushButton {
+    background-color: {{ style.button_background }};
+    color: {{ style.button_text }};
+    border-radius: {{ style.button_radius }}px;
+    padding: 5px 10px;
+    font-size: {{ style.button_font_size }}px;
+}
+QPushButton:hover {
+    background-color: {{ style.button_hover_background }};
+}
+QPushButton:pressed {
+    background-color: {{ style.button_pressed_background }};
+}
+
+/* Label styling */
+QLabel {
+    color: {{ style.label_text_color }};
+    font-size: {{ style.label_font_size }}px;
+}
+
+/* Line Edit (text field) styling */
+QLineEdit {
+    background-color: {{ style.lineedit_background }};
+    color: {{ style.lineedit_text_color }};
+    border: 1px solid {{ style.lineedit_border_color }};
+    border-radius: {{ style.lineedit_radius }}px;
+    padding: 5px;
+    font-size: {{ style.lineedit_font_size }}px;
+}
+QLineEdit:focus {
+    border: 1px solid {{ style.lineedit_focus_border_color }};
+}
+
+/* ComboBox styling */
+QComboBox {
+    background-color: {{ style.combobox_background }};
+    color: {{ style.combobox_text_color }};
+    border: 1px solid {{ style.combobox_border_color }};
+    border-radius: {{ style.combobox_radius }}px;
+    padding: 5px;
+    font-size: {{ style.combobox_font_size }}px;
+}
+QComboBox:focus {
+    border: 1px solid {{ style.combobox_focus_border_color }};
+}
+
+/* CheckBox styling */
+QCheckBox {
+    color: {{ style.checkbox_text_color }};
+    font-size: {{ style.checkbox_font_size }}px;
+}
+QCheckBox:checked {
+    background-color: {{ style.checkbox_checked_background }};
+}
+
+/* RadioButton styling */
+QRadioButton {
+    color: {{ style.radiobutton_text_color }};
+    font-size: {{ style.radiobutton_font_size }}px;
+}
+QRadioButton:checked {
+    background-color: {{ style.radiobutton_checked_background }};
+}
+
+/* ScrollBar styling */
+QScrollBar:vertical {
+    background-color: {{ style.scrollbar_background }};
+    border: 1px solid {{ style.scrollbar_border_color }};
+}
+QScrollBar:horizontal {
+    background-color: {{ style.scrollbar_background }};
+    border: 1px solid {{ style.scrollbar_border_color }};
+}
+
+/* ProgressBar styling */
+QProgressBar {
+    background-color: {{ style.progressbar_background }};
+    border-radius: {{ style.progressbar_radius }}px;
+    text-align: center;
+    font-size: {{ style.progressbar_font_size }}px;
+}
+QProgressBar::chunk {
+    background-color: {{ style.progressbar_chunk_background }};
+}
