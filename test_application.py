@@ -1,22 +1,24 @@
-import sys
 from PySide6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, 
+    QMainWindow, QWidget, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, 
     QGridLayout, QLineEdit, QSplitter, QTreeWidget, QTreeWidgetItem, QTableWidget, 
-    QTableWidgetItem, QListWidget, QListWidgetItem, QGroupBox, QTextEdit, QDockWidget
+    QTableWidgetItem, QListWidget, QListWidgetItem, QGroupBox, QTextEdit, QDockWidget, 
+    QRadioButton
 )
 from PySide6.QtCore import Qt
-from your_package.style_manager import StyleManager  # Replace with actual import
-
+from your_package.style_manager import StyleManager  # Update with actual import
 
 class TestStyleApp(QMainWindow):
-    def __init__(self, style_manager):
+    def __init__(self, style_manager_light, style_manager_dark):
         super().__init__()
         self.setWindowTitle("PySide6 Style Testing App")
         self.resize(800, 600)
 
-        # Generate stylesheet using StyleManager
-        stylesheet = style_manager.generate_stylesheet()
-        self.setStyleSheet(stylesheet)
+        # Store style managers
+        self.style_manager_light = style_manager_light
+        self.style_manager_dark = style_manager_dark
+
+        # Set initial style (light theme)
+        self.set_stylesheet(self.style_manager_light)
 
         # Main central widget
         central_widget = QWidget(self)
@@ -26,6 +28,17 @@ class TestStyleApp(QMainWindow):
         main_layout = QVBoxLayout()
         button_layout = QHBoxLayout()
         form_layout = QGridLayout()
+        theme_layout = QHBoxLayout()
+
+        # Theme Switch Radio Buttons
+        self.radio_light = QRadioButton("Light Theme")
+        self.radio_dark = QRadioButton("Dark Theme")
+        self.radio_light.setChecked(True)  # Default theme
+        self.radio_light.toggled.connect(self.switch_theme)
+        self.radio_dark.toggled.connect(self.switch_theme)
+
+        theme_layout.addWidget(self.radio_light)
+        theme_layout.addWidget(self.radio_dark)
 
         # Buttons
         btn1 = QPushButton("Button 1")
@@ -83,6 +96,7 @@ class TestStyleApp(QMainWindow):
         self.addDockWidget(Qt.RightDockWidgetArea, dock_widget)
 
         # Add widgets to main layout
+        main_layout.addLayout(theme_layout)  # Add theme switch buttons
         main_layout.addLayout(button_layout)
         main_layout.addLayout(form_layout)
         main_layout.addWidget(splitter)
@@ -93,54 +107,13 @@ class TestStyleApp(QMainWindow):
         # Set layout
         central_widget.setLayout(main_layout)
 
+    def set_stylesheet(self, style_manager):
+        """Apply the selected theme stylesheet."""
+        self.setStyleSheet(style_manager.generate_stylesheet())
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    # Define styles
-    style_dict = {
-        "background_color": "#F0F0F0",
-        "text_color": "#333333",
-        "button_color": "#007BFF",
-    }
-
-    base_template = """
-    QWidget {
-        background-color: {{ background_color }};
-        color: {{ text_color }};
-    }
-    QPushButton {
-        background-color: {{ button_color }};
-        border: 1px solid #0056b3;
-        padding: 5px;
-    }
-    QTableWidget, QTreeWidget {
-        border: 1px solid #aaa;
-        background-color: #ffffff;
-    }
-    QLineEdit {
-        border: 1px solid #999;
-        padding: 3px;
-    }
-    QSplitter::handle {
-        background-color: #666;
-    }
-    QDockWidget {
-        titlebar-close-icon: url(none);
-        titlebar-normal-icon: url(none);
-    }
-    """
-
-    theme_template = """
-    QPushButton:hover {
-        background-color: #0056b3;
-        color: #ffffff;
-    }
-    """
-
-    # Create and apply styles
-    style_manager = StyleManager(style_dict, base_template, theme_template)
-    window = TestStyleApp(style_manager)
-    window.show()
-
-    sys.exit(app.exec())
+    def switch_theme(self):
+        """Change theme dynamically when radio button is clicked."""
+        if self.radio_light.isChecked():
+            self.set_stylesheet(self.style_manager_light)
+        else:
+            self.set_stylesheet(self.style_manager_dark)
